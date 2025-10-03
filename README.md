@@ -1,5 +1,5 @@
 # Real-Time Mixed-Criticality Scheduler Simulation
-*An Operating System Scheduler that Thinks Like an ER Doctor 🏥*
+*An Operating System Scheduler that Thinks Like an ER Doctor*
 
 This project is a C++ simulation of a real-time, mixed-criticality operating system scheduler. It demonstrates why standard "fair" schedulers are unsuitable for safety-critical systems (like cars or robotics) and implements a criticality-aware scheduler that can guarantee the deadlines of the most important tasks, even under heavy system load.
 
@@ -53,7 +53,7 @@ This project uses C++17 and CMake.
 ```bash
 # 1. Clone the repository
 git clone <your-repository-url>
-cd real-time-mixed-criticality-scheduler
+cd mixed-criticality-scheduler
 
 # 2. Create a build directory
 mkdir build
@@ -75,6 +75,49 @@ The program will run both simulations and print the final reports to your consol
 ## Simulation Results
 
 The simulation was run with a high-load task set designed to cause failures in a standard scheduler. The results clearly demonstrate the superiority of the Mixed-Criticality approach.
+
+```bash
+=================================================
+  RUNNING SIMULATION WITH: Classic EDF Scheduler
+=================================================
+--- FINAL REPORT ---
+Total Ticks: 200
+CPU Utilization: 100.00%
+
+--- DEADLINE ANALYSIS ---
+LEVEL 1:
+  - Generated: 10
+  - Completed: 10
+  - MISSED: 0
+LEVEL 2:
+  - Generated: 4
+  - Completed: 0
+  - MISSED: 3  <-- Correctly shows failure now!
+LEVEL 3:
+  - Generated: 10
+  - Completed: 8
+  - MISSED: 1
+=================================================
+  RUNNING SIMULATION WITH: Mixed-Criticality Scheduler
+=================================================
+--- FINAL REPORT ---
+Total Ticks: 200
+CPU Utilization: 100.00%
+
+--- DEADLINE ANALYSIS ---
+LEVEL 1:
+  - Generated: 10
+  - Completed: 10
+  - MISSED: 0  <-- Mission-critical tasks are safe!
+LEVEL 2:
+  - Generated: 4
+  - Completed: 4
+  - MISSED: 0
+LEVEL 3:
+  - Generated: 10
+  - Completed: 3
+  - MISSED: 6  <-- Non-critical tasks are sacrificed, as intended.
+```
 
 | Feature / Analysis Point | Classic EDF Scheduler | Mixed-Criticality Scheduler |
 | :--- | :--- | :--- |
